@@ -21,6 +21,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-InventarioIFSP/packages
+/InventarioIFSP/packages/
+
+/packages/
+!packages/repositories.config
 
 # End of https://www.gitignore.io/api/windows
