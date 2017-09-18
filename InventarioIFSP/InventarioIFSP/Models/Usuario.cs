@@ -14,6 +14,11 @@ namespace Inventario_IFSPPRC.Models
         public string Telefone { get; set; }
         public List<int> Funcoes { get; set; } // padronizar numeração das funções
 
+        public Usuario()
+        {
+
+        }
+
         public Usuario(int ID, string Nome, string CPF, string Matricula, string Telefone, List<int> Funcoes)
         {
             this.ID = ID;
