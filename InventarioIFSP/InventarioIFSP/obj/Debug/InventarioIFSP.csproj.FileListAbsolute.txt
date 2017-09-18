@@ -88,3 +88,7 @@ C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\Inv
 C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\InventarioIFSP.dll.config
 C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\InventarioIFSP.dll
 C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\InventarioIFSP.pdb
+C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\Npgsql.dll
+C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\Npgsql.xml
+C:\Users\Juliana\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\bin\System.Threading.Tasks.Extensions.xml
