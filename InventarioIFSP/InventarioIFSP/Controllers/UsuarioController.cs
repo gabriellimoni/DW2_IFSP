@@ -31,10 +31,10 @@ namespace InventarioIFSP.Controllers
         public ActionResult Listagem()
         {
             UsuarioDAO dao = new UsuarioDAO();
-            List<Usuario> ListaUsuario = dao.GetAll();
-            var users = from u in ListaUsuario
-                        orderby u.Nome
-                        select u;
+            List<Usuario> users = dao.GetAll();
+            //var users = from u in ListaUsuario
+            //            orderby u.Nome
+            //            select u;
             return View(users);
         }
 
