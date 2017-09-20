@@ -4,11 +4,11 @@
 
 CREATE TABLE usuario(
 	id SERIAL NOT NULL PRIMARY KEY,
-	matricula VARCHAR(20) NOT NULL UNIQUE, --tamanho?
+	prontuario VARCHAR(20) NOT NULL UNIQUE, --tamanho?
 	nome VARCHAR(50) NOT NULL UNIQUE,
 	email VARCHAR(50),
-	telefone1 VARCHAR(18),
-	telefone2 VARCHAR(18)
+	nivel INTEGER,
+	senha VARCHAR(18)
 );
 
 /* crud

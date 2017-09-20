@@ -5,33 +5,29 @@ using System.Web;
 
 namespace InventarioIFSP.Models
 {
-    public class SalaCategoria
+    public class LocalidadeCategoria
     {
-        private int ID { get; set; }
-        private string Nome { get; set; }
-        private string Descricao { get; set; }
+        public int ID { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
 
-
-        public SalaCategoria(int ID, string Nome, string Descricao)
+        public LocalidadeCategoria(int ID, string Nome, string Descricao)
         {
             this.ID = ID;
             this.Nome = Nome;
             this.Descricao = Descricao;
         }
 
-
-        public SalaCategoria(string Nome, string Descricao)
+        public LocalidadeCategoria(string Nome, string Descricao)
         {
             this.Nome = Nome;
             this.Descricao = Descricao;
         }
 
-        public SalaCategoria(int ID)
+        public LocalidadeCategoria(int ID)
         {
             this.ID = ID;
         }
-
-
 
         public Boolean insert()
         {

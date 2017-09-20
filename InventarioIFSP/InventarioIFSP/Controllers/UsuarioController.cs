@@ -1,4 +1,5 @@
 ﻿using Inventario_IFSPPRC.Models;
+using InventarioIFSP.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace InventarioIFSP.Controllers
 
         public ActionResult Listagem()
         {
+            UsuarioDAO dao = new UsuarioDAO();
+            List<Usuario> ListaUsuario = dao.GetAll();
             var users = from u in ListaUsuario
                         orderby u.Nome
                         select u;
@@ -56,7 +59,7 @@ namespace InventarioIFSP.Controllers
             {
                 // TODO: Add insert logic here
                 user.ID++;
-                ListaUsuario.Add(user);
+                //ListaUsuario.Add(user);
 
                 return RedirectToAction("Listagem");
             }
@@ -69,26 +72,27 @@ namespace InventarioIFSP.Controllers
         // GET: Usuario/Edit/5
         public ActionResult Edit(int id)
         {
-            Usuario usu = ListaUsuario.Single(u => u.ID == id);
-            return View(usu);
+            //Usuario usu = ListaUsuario.Single(u => u.ID == id);
+            return View();
         }
 
         // POST: Usuario/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add update logic here
-                var user = ListaUsuario.Single(u => u.ID == id);
-                if (TryUpdateModel(user))
-                    return RedirectToAction("Listagem");
-                return View(user);
-            }
-            catch
-            {
-                return View();
-            }
+            //try
+            //{
+            //    // TODO: Add update logic here
+            //    //var user = ListaUsuario.Single(u => u.ID == id);
+            //    if (TryUpdateModel(user))
+            //        return RedirectToAction("Listagem");
+            //    return View(user);
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
+            return View();
         }
 
         // GET: Usuario/Delete/5
@@ -112,46 +116,5 @@ namespace InventarioIFSP.Controllers
                 return View();
             }
         }
-
-
-        public static List<Usuario> ListaUsuario = new List<Usuario>
-        {
-            new Usuario
-            {
-                ID = 1,
-                Nome = "Rosana",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 2,
-                Nome = "Gabriel",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 3,
-                Nome = "Eraldo",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 4,
-                Nome = "Tatiane",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            }
-        };
     }
 }

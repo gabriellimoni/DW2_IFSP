@@ -9,72 +9,17 @@ namespace Inventario_IFSPPRC.Models
     {
         public int ID { get; set; }
         public string Nome { get; set; }
-        public string CPF { get; set; }
-        public string Matricula { get; set; }
-        public string Telefone { get; set; }
-        public List<int> Funcoes { get; set; } // padronizar numeração das funções
+        public string Prontuario { get; set; }
+        public string Email { get; set; }
+        public string Senha { get; set; }
+        public int Nivel { get; set; } // padronizar numeração das funções
+        // 0 - Admin: Gerencia usuários
+        // 1 - Supervisor: Cadastra novas categorias, subcategorias, localidades, relatorios
+        // 2 - Usuário: altera a localização dos itens
 
         public Usuario()
         {
 
-        }
-
-        public Usuario(int ID, string Nome, string CPF, string Matricula, string Telefone, List<int> Funcoes)
-        {
-            this.ID = ID;
-            this.Nome = Nome;
-            this.CPF = CPF;
-            this.Matricula = Matricula;
-            this.Telefone = Telefone;
-            this.Funcoes = Funcoes;
-        }
-
-        public Usuario(string Nome, string CPF, string Matricula, string Telefone, List<int> Funcoes)
-        {
-            this.Nome = Nome;
-            this.CPF = CPF;
-            this.Matricula = Matricula;
-            this.Telefone = Telefone;
-            this.Funcoes = Funcoes;
-        }
-
-        public Usuario(int ID)
-        {
-            this.ID = ID;
-        }
-
-
-
-
-        public Boolean insert()
-        {
-            // comandos para inserir 
-
-
-            return false;
-        }
-
-        public Boolean update()
-        {
-            // comandos para atualizar 
-
-
-            return false;
-        }
-
-        public Boolean delete()
-        {
-            // comandos para deletar 
-
-
-            return false;
-        }
-
-        public Boolean autenticar()
-        {
-
-
-            return false;
         }
     }
 }

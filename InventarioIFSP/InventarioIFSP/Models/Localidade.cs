@@ -5,15 +5,15 @@ using System.Web;
 
 namespace InventarioIFSP.Models
 {
-    public class Sala
+    public class Localidade
     {
-        private int ID { get; set; }
-        private string Nome { get; set; }
-        private SalaCategoria Categoria { get; set; }
-        private string Bloco { get; set; }
+        public int ID { get; set; }
+        public string Nome { get; set; }
+        public LocalidadeCategoria Categoria { get; set; }
+        public string Bloco { get; set; }
 
 
-        public Sala(int ID, string Nome, SalaCategoria Categoria, string Bloco)
+        public Localidade(int ID, string Nome, LocalidadeCategoria Categoria, string Bloco)
         {
             this.ID = ID;
             this.Nome = Nome;
@@ -21,14 +21,14 @@ namespace InventarioIFSP.Models
             this.Bloco = Bloco;
         }
 
-        public Sala(string Nome, SalaCategoria Categoria, string Bloco)
+        public Localidade(string Nome, LocalidadeCategoria Categoria, string Bloco)
         {
             this.Nome = Nome;
             this.Categoria = Categoria;
             this.Bloco = Bloco;
         }
 
-        public Sala(int ID)
+        public Localidade(int ID)
         {
             this.ID = ID;
         }

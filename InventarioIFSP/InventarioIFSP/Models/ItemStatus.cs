@@ -5,10 +5,9 @@ using System.Web;
 
 namespace InventarioIFSP.Models
 {
-    public class Banco
+    public class ItemStatus
     {
-        // parametros de conexão
-
-        // funções para executar comando SQL e retornar error
+        public int Id { get; set; }
+        public string Nome { get; set; }
     }
 }
