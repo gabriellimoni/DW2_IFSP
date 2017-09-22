@@ -23,17 +23,32 @@ namespace InventarioIFSP.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginPost()
+        public ActionResult Login(Usuario usuario)
         {
             string valor = Request.Params["valor"];
             string senha = Request.Params["senha"];
-            Usuario u = UsuarioDAO.Login(valor, senha);
+            Usuario u = UsuarioDAO.Login(usuario.Email, usuario.Senha);
             if (u != null)
-                return RedirectToRoute("Home", "InventárioController");
+            {
+                Session["usuario_id"] = u.ID;
+                Session["usuario_nome"] = u.Nome;
+                Session["usuario_email"] = u.Email;
+                Session["usuario_nivel"] = u.Nivel;
+                return RedirectToAction("Index", "Inventario");
+            }
 
             TempData["msg"] = "Dados não conferem!";
             TempData["msg_type"] = "danger";
             return View();
+        }
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session["usuario_id"] = null;
+            Session["usuario_nome"] =  null;
+            Session["usuario_email"] = null;
+            Session["usuario_nivel"] = null;
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

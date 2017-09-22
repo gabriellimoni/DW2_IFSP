@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -18,18 +18,57 @@
                 </button>
                 @Html.ActionLink("INVENTÁRIO CAE IFSP-PRC", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Início", "Index", "Home")</li>
                     <li>@Html.ActionLink("Sobre", "About", "Home")</li>
-                    @if (true) // aqui verifica se está logado
+                    @if (Session["usuario_nome"] != null) // aqui verifica se está logado
                     {
+                                
                         <li>
-                            @Html.ActionLink("Usuarios", "Index", "Usuario");
-
+                            @Html.ActionLink("Inventário", "Index", "Inventario");
                         </li>
+
+                        if (Convert.ToInt32(Session["usuario_nivel"]) < 2)
+                        {
+                            <li>
+                                @Html.ActionLink("Itens", "Index", "Item");
+                            </li>
+                            <li>
+                                @Html.ActionLink("Relatórios", "Relatorios", "Inventario");
+                            </li>
+                        }
+                        if (Convert.ToInt32(Session["usuario_nivel"]) < 1)
+                        {
+                            <li>
+                                @Html.ActionLink("Usuários", "Index", "Usuario");
+                            </li>
+                        }
+                        <li>
+                            <div class="dropdown">
+                                <button style="margin-top: 10px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    @Session["usuario_nome"]
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        @Html.ActionLink("Minha conta", "MinhaConta", "Usuario")
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        @Html.ActionLink("Sair", "Logout", "Usuario")
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+
                     }
-                    <li>@Html.ActionLink("Login", "Login", "Usuario")</li>
+                    else
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Usuario")</li>
+                    }
                 </ul>
             </div>
         </div>

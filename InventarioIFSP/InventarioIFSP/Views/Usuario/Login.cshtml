@@ -1,4 +1,5 @@
-﻿
+﻿@model Inventario_IFSPPRC.Models.Usuario
+
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,17 +14,34 @@
     }
 
 }
-<div class="row">
-    <div class="col-md-6 col-md-offset-4">
-        <br />
-        <form action="/LoginPost" method="post">
-            <label for="username">Nome de usuário</label>
-            <input type="text" name="login" value="" placeholder="Email ou Prontuário" class="form-control"/>
-            <label for="password">Senha</label>
-            <input type="password" name="senha" value="" placeholder="Senha" class="form-control"/>
-            <button class="btn btn-primary" type="submit">Enviar</button>
-            <button class="btn btn-default" type="reset">Limpar</button>
-        </form>
-    </div>
-</div>
 
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class = "control-label col-md-2">Email ou Prontuário</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Senha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Senha, new { htmlAttributes = new { @class = "form-control", type="password" } })
+                @Html.ValidationMessageFor(model => model.Senha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Entrar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

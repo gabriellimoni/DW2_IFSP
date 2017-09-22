@@ -304,18 +304,20 @@ namespace InventarioIFSP.Database
                 Adpt.Fill(table);
                 Usuario usuario;
                 if (table.Rows.Count > 0)
-                {
-                    DataRow dr = table.NewRow();
-                    usuario = new Usuario
+                {                    
+                    foreach( DataRow dr in table.Rows)
                     {
-                        ID = Convert.ToInt32(dr["id"]),
-                        Nome = dr["nome"].ToString(),
-                        Email = dr["email"].ToString(),
-                        Prontuario = dr["prontuario"].ToString(),
-                        Nivel = Convert.ToInt32(dr["nivel"])
-                    };
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(dr["id"]),
+                            Nome = dr["nome"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Prontuario = dr["prontuario"].ToString(),
+                            Nivel = Convert.ToInt32(dr["nivel"])
+                        };
                     dbConn.Close();
                     return usuario;
+                    }
                 }
             }
             catch (Exception e)
@@ -350,17 +352,19 @@ namespace InventarioIFSP.Database
                 Usuario usuario;
                 if (table.Rows.Count > 0)
                 {
-                    DataRow dr = table.NewRow();
-                    usuario = new Usuario
+                    foreach (DataRow dr in table.Rows)
                     {
-                        ID = Convert.ToInt32(dr["id"]),
-                        Nome = dr["nome"].ToString(),
-                        Email = dr["email"].ToString(),
-                        Prontuario = dr["prontuario"].ToString(),
-                        Nivel = Convert.ToInt32(dr["nivel"])
-                    };
-                    dbConn.Close();
-                    return usuario;
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(dr["id"]),
+                            Nome = dr["nome"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Prontuario = dr["prontuario"].ToString(),
+                            Nivel = Convert.ToInt32(dr["nivel"])
+                        };
+                        dbConn.Close();
+                        return usuario;
+                    }
                 }
             }
             catch (Exception e)

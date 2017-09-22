@@ -30,12 +30,6 @@ namespace InventarioIFSP
                 url: "Usuario/Login",
                 defaults: new { controller = "Usuario", action = "Login" }
             );
-
-            routes.MapRoute(
-                name: "EnviaLogin",
-                url: "Usuario/EnviaLogin",
-                defaults: new { controller = "Usuario", action = "EnviaLogin" }
-            );
         }
     }
 }
