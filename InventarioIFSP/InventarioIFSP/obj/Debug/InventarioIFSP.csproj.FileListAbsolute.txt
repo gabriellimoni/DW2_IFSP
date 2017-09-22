@@ -87,3 +87,4 @@ C:\Users\gabri\Downloads\DW2_IFSP-master\InventarioIFSP\InventarioIFSP\bin\Micro
 C:\Users\gabri\Downloads\DW2_IFSP-master\InventarioIFSP\InventarioIFSP\obj\Debug\InventarioIFSP.csprojResolveAssemblyReference.cache
 C:\Users\gabri\Downloads\DW2_IFSP-master\InventarioIFSP\InventarioIFSP\obj\Debug\InventarioIFSP.dll
 C:\Users\gabri\Downloads\DW2_IFSP-master\InventarioIFSP\InventarioIFSP\obj\Debug\InventarioIFSP.pdb
+C:\Users\erald\Dropbox\IFSP\6-Semestre\DW2\Projeto\DW2_IFSP\InventarioIFSP\InventarioIFSP\obj\Debug\InventarioIFSP.csproj.CoreCompileInputs.cache

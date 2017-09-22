@@ -22,6 +22,20 @@ namespace InventarioIFSP.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult LoginPost()
+        {
+            string valor = Request.Params["valor"];
+            string senha = Request.Params["senha"];
+            Usuario u = UsuarioDAO.Login(valor, senha);
+            if (u != null)
+                return RedirectToRoute("Home", "InventárioController");
+
+            TempData["msg"] = "Dados não conferem!";
+            TempData["msg_type"] = "danger";
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -43,14 +57,7 @@ namespace InventarioIFSP.Controllers
             TempData["msg"] = "Erro na criação!";
             return View();
         }
-
-        [HttpPost]
-        public ActionResult Login(Usuario usuario)
-        {
-            //UsuarioDAO.Login();
-            return View();
-        }
-
+    
         [HttpGet]
         public ActionResult List()
         {
@@ -63,9 +70,6 @@ namespace InventarioIFSP.Controllers
             }
             return View(users);
         }
-
-
-        
 
         [HttpGet]
         public ActionResult Edit(int id)
