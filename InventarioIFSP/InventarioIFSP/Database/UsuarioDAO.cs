@@ -270,7 +270,19 @@ namespace InventarioIFSP.Database
         // TODO, após implementar hash, necessário alterar aqui
         // Método de Login - Retorna objeto usuário
         // Campo pesquisa, pode ser pronturario ou email
-        public static Usuario Login(string campoPesquisa, string valor, string senha)
+        public static Usuario Login(string valor, string senha)
+        {
+            Usuario u = LoginViaEmail(valor, senha);
+            if (u == null)
+            {
+                return LoginViaProntuario(valor, senha);
+            }
+            return u;
+          
+        }
+
+        // Login pelo Email
+        private static Usuario LoginViaEmail(string email, string senha)
         {
             NpgsqlParameter param;
             DataTable table = new DataTable();
@@ -278,14 +290,10 @@ namespace InventarioIFSP.Database
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "SELECT * FROM Usuario WHERE @campoPesquisa = @valor AND senha = @senha";
+                command.CommandText = "SELECT * FROM Usuario WHERE email = @email AND senha = @senha";
 
-                param = new NpgsqlParameter("@campoPesquisa", NpgsqlTypes.NpgsqlDbType.Varchar, 20);
-                param.Value = campoPesquisa;
-                command.Parameters.Add(param);
-
-                param = new NpgsqlParameter("@valor", NpgsqlTypes.NpgsqlDbType.Varchar, 50);
-                param.Value = valor;
+                param = new NpgsqlParameter("@email", NpgsqlTypes.NpgsqlDbType.Varchar, 20);
+                param.Value = email;
                 command.Parameters.Add(param);
 
                 param = new NpgsqlParameter("@senha", NpgsqlTypes.NpgsqlDbType.Varchar, 255);
@@ -296,18 +304,67 @@ namespace InventarioIFSP.Database
                 Adpt.Fill(table);
                 Usuario usuario;
                 if (table.Rows.Count > 0)
-                {
-                    DataRow dr = table.NewRow();
-                    usuario = new Usuario
+                {                    
+                    foreach( DataRow dr in table.Rows)
                     {
-                        ID = Convert.ToInt32(dr["id"]),
-                        Nome = dr["nome"].ToString(),
-                        Email = dr["email"].ToString(),
-                        Prontuario = dr["prontuario"].ToString(),
-                        Nivel = Convert.ToInt32(dr["nivel"])
-                    };
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(dr["id"]),
+                            Nome = dr["nome"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Prontuario = dr["prontuario"].ToString(),
+                            Nivel = Convert.ToInt32(dr["nivel"])
+                        };
                     dbConn.Close();
                     return usuario;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/UsuarioDAO/LoginViaEmail:: " + e);
+            }
+            dbConn.Close();
+            return null;
+        }
+
+        // Login por Prontuario
+        private static Usuario LoginViaProntuario(string prontuario, string senha)
+        {
+            NpgsqlParameter param;
+            DataTable table = new DataTable();
+            OpenConn();
+            try
+            {
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "SELECT * FROM Usuario WHERE prontuario = @prontuario AND senha = @senha";
+
+                param = new NpgsqlParameter("@prontuario", NpgsqlTypes.NpgsqlDbType.Varchar, 20);
+                param.Value = prontuario;
+                command.Parameters.Add(param);
+                
+                param = new NpgsqlParameter("@senha", NpgsqlTypes.NpgsqlDbType.Varchar, 255);
+                param.Value = senha;
+                command.Parameters.Add(param);
+
+                NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
+                Adpt.Fill(table);
+                Usuario usuario;
+                if (table.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(dr["id"]),
+                            Nome = dr["nome"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Prontuario = dr["prontuario"].ToString(),
+                            Nivel = Convert.ToInt32(dr["nivel"])
+                        };
+                        dbConn.Close();
+                        return usuario;
+                    }
                 }
             }
             catch (Exception e)
@@ -318,6 +375,7 @@ namespace InventarioIFSP.Database
             return null;
         }
 
+        // Busca usuário por ID
         public static Usuario GetByID(int Id)
         {
             NpgsqlParameter param;
@@ -362,6 +420,7 @@ namespace InventarioIFSP.Database
             return null;
         }
 
+        // Lista todos usuários
         public static List<Usuario> GetAll()
         {
             DataTable table = new DataTable();
@@ -405,6 +464,7 @@ namespace InventarioIFSP.Database
 
         }
 
+        // Retorna lista com tipos de usuários
         public static List<SelectListItem> GetTipos()
         {
             List<SelectListItem> lista_tipos = new List<SelectListItem>();
