@@ -1,9 +1,17 @@
 ﻿@{
-    ViewBag.Title = "Usuarios";
+    ViewBag.Title = "Gerenciamento de usuários";
 }
 
 
-<h2>Gerenciamento de usuários</h2>
+<h2>@ViewBag.Title</h2>
 
-@Html.ActionLink("Lista de usuários", "Listagem", "Usuario")<br />
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"]">@TempData["msg"]</div>
+    }
+
+}
+
+@Html.ActionLink("Lista de usuários", "List", "Usuario")<br />
 @Html.ActionLink("Cadastro de usuários", "Create", "Usuario")

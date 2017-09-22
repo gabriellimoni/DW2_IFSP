@@ -1,11 +1,19 @@
 ﻿@model IEnumerable<Inventario_IFSPPRC.Models.Usuario>
 
 @{
-    ViewBag.Title = "Listagem";
+    ViewBag.Title = "Lista de usuários";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Listagem</h2>
+<h2>@ViewBag.Title</h2>
 
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"]">@TempData["msg"]</div>
+    }
+
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -15,10 +23,13 @@
             @Html.DisplayNameFor(model => model.Nome)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Prontuario)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Prontuario)
+            @Html.DisplayNameFor(model => model.Senha)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Nivel)
@@ -32,17 +43,16 @@
             @Html.DisplayFor(modelItem => item.Nome)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Prontuario)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Nivel)
+            @Html.DisplayFor(modelItem => item.Email)   
         </td>
         <td>
+            @Html.DisplayFor(modelItem => InventarioIFSP.Database.UsuarioDAO.GetTipos()[item.Nivel].Text)
+        </td>   
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>

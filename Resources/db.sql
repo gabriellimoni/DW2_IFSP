@@ -1,12 +1,10 @@
-CREATE DATABASE inventario;
-
 CREATE TABLE usuario(
 	id SERIAL NOT NULL PRIMARY KEY,
-	nome VARCHAR(50) NOT NULL UNIQUE,
+	nome VARCHAR(50) NOT NULL,
 	prontuario VARCHAR(20) NOT NULL UNIQUE,
-	email VARCHAR(50),
-	nivel INTEGER,
-	senha VARCHAR(18)
+	email VARCHAR(50) UNIQUE,
+	nivel VARCHAR(20) DEFAULT 'Padrão',
+	senha VARCHAR(255)
 );
 
   CREATE TABLE localidade(
@@ -27,22 +25,22 @@ CREATE TABLE usuario(
 
   CREATE TABLE localidade_categoria(
     id SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(50) NOT NULL UNIQUE
   );
 
   CREATE TABLE item_categoria(
     id SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(50) NOT NULL UNIQUE
   );
 
   CREATE TABLE item_subcategoria(
     id SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(50) NOT NULL UNIQUE
   );
 
   CREATE TABLE item_status(
     id SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(50) NOT NULL UNIQUE
   );
 
 -- CONSTRAINTS
