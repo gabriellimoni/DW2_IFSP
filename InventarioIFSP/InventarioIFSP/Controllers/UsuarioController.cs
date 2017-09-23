@@ -1,4 +1,6 @@
 ﻿using Inventario_IFSPPRC.Models;
+using InventarioIFSP.Database;
+using InventarioIFSP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,11 @@ namespace InventarioIFSP.Controllers
 {
     public class UsuarioController : Controller
     {
-        // GET: Usuario
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("List");
         }
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -21,137 +23,106 @@ namespace InventarioIFSP.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviaLogin()
+        public ActionResult Login(Usuario usuario)
         {
+            string valor = Request.Params["valor"];
+            string senha = Request.Params["senha"];
+            Usuario u = UsuarioDAO.Login(usuario.Email, usuario.Senha);
+            if (u != null)
+            {
+                Session["usuario_id"] = u.ID;
+                Session["usuario_nome"] = u.Nome;
+                Session["usuario_email"] = u.Email;
+                Session["usuario_nivel"] = u.Nivel;
+                return RedirectToAction("Index", "Inventario");
+            }
+
+            TempData["msg"] = "Dados não conferem!";
+            TempData["msg_type"] = "danger";
             return View();
         }
-        
-
-        public ActionResult Listagem()
+        [HttpGet]
+        public ActionResult Logout()
         {
-            var users = from u in ListaUsuario
-                        orderby u.Nome
-                        select u;
-            return View(users);
+            Session["usuario_id"] = null;
+            Session["usuario_nome"] =  null;
+            Session["usuario_email"] = null;
+            Session["usuario_nivel"] = null;
+            return RedirectToAction("Index", "Home");
         }
 
-
-        // GET: Usuario/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Usuario/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuario/Create
         [HttpPost]
         public ActionResult Create(Usuario user)
         {
-            try
+            var result = UsuarioDAO.Create(user);
+            if (result != null)
             {
-                // TODO: Add insert logic here
-                user.ID++;
-                ListaUsuario.Add(user);
-
-                return RedirectToAction("Listagem");
+                TempData["msg_type"] = "success";
+                TempData["msg"] = "Criado com sucesso!";
+                return RedirectToAction("List");
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Usuario/Edit/5
-        public ActionResult Edit(int id)
-        {
-            Usuario usu = ListaUsuario.Single(u => u.ID == id);
-            return View(usu);
-        }
-
-        // POST: Usuario/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                var user = ListaUsuario.Single(u => u.ID == id);
-                if (TryUpdateModel(user))
-                    return RedirectToAction("Listagem");
-                return View(user);
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int id)
-        {
+  
+            TempData["msg_type"] = "danger";
+            TempData["msg"] = "Erro na criação!";
             return View();
         }
-
-        // POST: Usuario/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+    
+        [HttpGet]
+        public ActionResult List()
         {
-            try
+            List<Usuario> users = UsuarioDAO.GetAll();
+            if (users == null)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Listagem");
+                users = new List<Usuario>();
+                TempData["msg"] = "Erro ao buscar usuários";
+                TempData["msg_type"] = "danger";
             }
-            catch
-            {
-                return View();
-            }
+            return View(users);
         }
 
-
-        public static List<Usuario> ListaUsuario = new List<Usuario>
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            new Usuario
+            // Lista de itens do dropdown
+
+            Usuario u = UsuarioDAO.GetByID(id);
+            return View(u);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Usuario usuario)
+        {
+            if (UsuarioDAO.Update(usuario))
             {
-                ID = 1,
-                Nome = "Rosana",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 2,
-                Nome = "Gabriel",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 3,
-                Nome = "Eraldo",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
-            },
-            new Usuario
-            {
-                ID = 4,
-                Nome = "Tatiane",
-                CPF = "453.956.488.95",
-                Matricula = "PC15502020",
-                Telefone = "(19)1928198239",
-                Funcoes = new List<int>{0,1,2,3,4,5,6}
+                TempData["msg_type"] = "success";
+                TempData["msg"] = "Alterado com sucesso!";
+                return RedirectToAction("List");
             }
-        };
+            TempData["msg_type"] = "danger";
+            TempData["msg"] = "Erro ao alterar. Verifique os campos!";
+            return View(usuario);
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            //TODO: Verifica se está autorizado a excluir
+
+            if(UsuarioDAO.Delete(id))
+            {
+                TempData["msg"] = "Excluído com sucesso!";
+                TempData["msg_type"] = "success";
+                return RedirectToAction("List");
+            }
+            TempData["msg_type"] = "danger";
+            TempData["msg"] = "Erro ao excluir!";
+            return View();
+        }
     }
 }

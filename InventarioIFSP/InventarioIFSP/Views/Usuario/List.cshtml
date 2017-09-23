@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Inventario_IFSPPRC.Models.Usuario>
+
+@{
+    ViewBag.Title = "Gerenciamento de usuários";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ <div class="row justify-content-center text-center">
+    <h2>@ViewBag.Title</h2>
+ </div>
+
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"]">@TempData["msg"]</div>
+    }   
+
+}
+<p>
+    @Html.ActionLink("Criar novo", "Create", "Usuario", null, new {@class="btn btn-dark", role="button" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prontuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nivel)
+        </th>
+        <th>
+            Ações
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Prontuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)   
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => InventarioIFSP.Database.UsuarioDAO.GetTipos()[item.Nivel].Text)
+        </td>   
+        <td>
+            @Html.ActionLink("Editar", "Edit", "Usuario", new { id=item.ID }, new { @class = "btn btn-primary" }) |
+            @{ 
+                if (item.Nivel == 0)
+                {
+                    <span title="Administradores não podem ser excluídos. Rebaixe o nível para excluir.">Excluir</span>
+                }
+                else
+                {
+                    @Html.ActionLink("Excluir", "Delete", "Usuario", new { id = item.ID }, new { @class="btn btn-danger"})
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>
