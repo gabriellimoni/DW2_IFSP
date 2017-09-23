@@ -13,7 +13,7 @@ namespace InventarioIFSP.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("List");
         }
 
         [HttpGet]
