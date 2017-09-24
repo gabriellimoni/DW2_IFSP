@@ -12,7 +12,12 @@
 @{
     if (TempData["msg"] != null)
     {
-        <div class="alert alert-@TempData["msg_type"]">@TempData["msg"]</div>
+        <div class="alert alert-@TempData["msg_type"]">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["msg"]
+        </div>
     }
 
 }
@@ -53,12 +58,11 @@
                     @Html.EditorFor(model => model.Senha, new { htmlAttributes = new { @class = "form-control", type = "password", size = "20" } })
                     @Html.ValidationMessageFor(model => model.Senha, "", new { @class = "text-danger" })
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.Nivel, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(
                                 model => model.Nivel,
-                                Model.Niveis,
+                                InventarioIFSP.Database.UsuarioDAO.GetTipos(),
                                 new { @class = "form-control" }
                             )
                     @Html.ValidationMessageFor(model => model.Nivel, "", new { @class = "text-danger" })
