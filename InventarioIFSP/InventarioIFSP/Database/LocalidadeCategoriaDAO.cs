@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace InventarioIFSP.Database
 {
-    public class ItemCategoriaDAO
+    public class LocalidadeCategoriaDAO
     {
         private static NpgsqlConnection dbConn;
         public static List<SelectListItem> lista_categorias;
@@ -29,7 +29,7 @@ namespace InventarioIFSP.Database
         }
 
         // Cria subcategoria
-        public static object Create(ItemCategoria categoria)
+        public static object Create(LocalidadeCategoria categoria)
         {
             NpgsqlParameter param;
             if (dbConn == null)
@@ -39,7 +39,7 @@ namespace InventarioIFSP.Database
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "INSERT INTO item_categoria(nome, descricao) values (@nome, @descricao) RETURNING id";
+                command.CommandText = "INSERT INTO localidade_categoria(nome, descricao) values (@nome, @descricao) RETURNING id";
 
                 param = new NpgsqlParameter("@nome", NpgsqlTypes.NpgsqlDbType.Varchar, 50);
                 param.Value = categoria.Nome;
@@ -57,20 +57,20 @@ namespace InventarioIFSP.Database
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemCategoriaDAO/Create:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/LocalidadeCategoriaDAO/Create:: " + e);
                 dbConn.Close();
                 return null;
             }
         }
 
-        public static Boolean Update(ItemCategoria categoria)
+        public static Boolean Update(LocalidadeCategoria categoria)
         {
             NpgsqlParameter param;
             OpenConn();
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "UPDATE item_categoria SET nome = @nome, descricao = @descricao WHERE id =@id  RETURNING id";
+                command.CommandText = "UPDATE localidade_categoria SET nome = @nome, descricao = @descricao WHERE id =@id  RETURNING id";
 
                 param = new NpgsqlParameter("@nome", NpgsqlTypes.NpgsqlDbType.Varchar, 50);
                 param.Value = categoria.Nome;
@@ -95,7 +95,7 @@ namespace InventarioIFSP.Database
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemCategoriaDAO/Update:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/LocalidadeCategoriaDAO/Update:: " + e);
 
                 dbConn.Close();
             }
@@ -109,7 +109,7 @@ namespace InventarioIFSP.Database
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "DELETE FROM item_categoria WHERE id = @id RETURNING 0";
+                command.CommandText = "DELETE FROM localidade_categoria WHERE id = @id RETURNING 0";
 
                 param = new NpgsqlParameter("@id", NpgsqlTypes.NpgsqlDbType.Integer, 0);
                 param.Value = Id;
@@ -123,58 +123,56 @@ namespace InventarioIFSP.Database
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemCategoriaDAO/Delete:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/LocalidadeCategoriaDAO/Delete:: " + e);
                 dbConn.Close();
             }
             return false;
         }
 
-        public static ItemCategoria GetByID(int id)
+        public static LocalidadeCategoria GetByID(int id)
         {
             DataTable table = new DataTable();
-            ItemCategoria cat = null;
+            LocalidadeCategoria categoria = null;
             OpenConn();
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "SELECT * FROM item_categoria WHERE id = " + id;
+                command.CommandText = "SELECT * FROM localidade_categoria WHERE id = " + id;
                 NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
                 Adpt.Fill(table);
-
                 if (table.Rows.Count > 0)
                 {
                     foreach (DataRow dr in table.Rows)
                     {
-                        cat= new ItemCategoria
+                        categoria =  new LocalidadeCategoria
                         {
                             ID = Convert.ToInt32(dr["id"]),
                             Nome = dr["nome"].ToString(),
                             Descricao = dr["descricao"].ToString()
+
                         };
-                    dbConn.Close();
-                    return cat;
+                        dbConn.Close();
+                        return categoria;
                     }
                 }
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemCategoriaDAO/GetAll:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/LocalidadeCategoriaDAO/GetAll:: " + e);
             }
             dbConn.Close();
-            return cat;
-
-
+            return null;
         }
 
-        public static List<ItemCategoria> GetAll()
+        public static List<LocalidadeCategoria> GetAll()
         {
             DataTable table = new DataTable();
-            List<ItemCategoria> lista = new List<ItemCategoria>();
+            List<LocalidadeCategoria> lista = new List<LocalidadeCategoria>();
             OpenConn();
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "SELECT * FROM item_categoria";
+                command.CommandText = "SELECT * FROM localidade_categoria";
                 NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
                 Adpt.Fill(table);
 
@@ -183,7 +181,7 @@ namespace InventarioIFSP.Database
                     foreach (DataRow dr in table.Rows)
                     {
                         lista.Add(
-                            new ItemCategoria
+                            new LocalidadeCategoria
                             {
                                 ID = Convert.ToInt32(dr["id"]),
                                 Nome = dr["nome"].ToString(),
@@ -197,20 +195,18 @@ namespace InventarioIFSP.Database
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemCategoriaDAO/GetAll:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/LocalidadeCategoriaDAO/GetAll:: " + e);
                 dbConn.Close();
                 return null;
-            }
-
-
+            }            
         }
 
         public static void AtualizaCategorias()
         {
             lista_categorias = new List<SelectListItem>();
-            List<ItemCategoria> lista = GetAll();
+            List<LocalidadeCategoria> lista = GetAll();
 
-            foreach (ItemCategoria cat in lista)
+            foreach (LocalidadeCategoria cat in lista)
             {
                 lista_categorias.Add(
                     new SelectListItem

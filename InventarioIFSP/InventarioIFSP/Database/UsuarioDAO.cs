@@ -39,8 +39,8 @@ namespace InventarioIFSP.Database
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "INSERT INTO Usuario(nome, email, prontuario, senha)" +
-                    "values(@nome, @email, @prontuario, @senha) RETURNING id";
+                command.CommandText = "INSERT INTO Usuario(nome, email, prontuario, senha, nivel)" +
+                    "values(@nome, @email, @prontuario, @senha, @nivel) RETURNING id";
 
 
                 param = new NpgsqlParameter("@nome", NpgsqlTypes.NpgsqlDbType.Varchar, 50);
@@ -59,18 +59,25 @@ namespace InventarioIFSP.Database
                 param.Value = usuario.Senha;
                 command.Parameters.Add(param);
 
+                param = new NpgsqlParameter("@nivel", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = usuario.Nivel;
+                command.Parameters.Add(param);
+
+
                 command.Prepare();
                 var result = command.ExecuteScalar();
                 dbConn.Close();
 
-                return result;
+                if (result != null && (int)result > 0)
+                    return result;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("INVENTARIO/UsuarioDAO/Create:: " + e);
-                dbConn.Close();
-                return null;
+                
             }
+            dbConn.Close();
+            return null;
         }
 
         // Atualiza dados do usuário - Método de Admin que tbm altera o nível
@@ -459,8 +466,7 @@ namespace InventarioIFSP.Database
                 System.Diagnostics.Debug.WriteLine("INVENTARIO/UsuarioDAO/GetAll:: " + e);
                 dbConn.Close();
                 return null;
-            }
-            
+            }           
 
         }
 

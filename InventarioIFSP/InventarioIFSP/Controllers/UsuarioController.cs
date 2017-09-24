@@ -13,7 +13,25 @@ namespace InventarioIFSP.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("List");
+            if (Session["usuario_nivel"] != null) // Proteção de rota
+            {
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    return RedirectToAction("List");
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
@@ -41,88 +59,192 @@ namespace InventarioIFSP.Controllers
             TempData["msg_type"] = "danger";
             return View();
         }
+
         [HttpGet]
         public ActionResult Logout()
         {
-            Session["usuario_id"] = null;
-            Session["usuario_nome"] =  null;
-            Session["usuario_email"] = null;
-            Session["usuario_nivel"] = null;
+            try
+            {
+                Session["usuario_id"] = null;
+                Session["usuario_nome"] = null;
+                Session["usuario_email"] = null;
+                Session["usuario_nivel"] = null;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            if (Session["usuario_nivel"] != null) // Proteção de rota
+            {
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    return View();
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
         }
+    
 
         [HttpPost]
         public ActionResult Create(Usuario user)
         {
-            var result = UsuarioDAO.Create(user);
-            if (result != null)
+            if (Session["usuario_nivel"] != null) // Proteção de rota
             {
-                TempData["msg_type"] = "success";
-                TempData["msg"] = "Criado com sucesso!";
-                return RedirectToAction("List");
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    if (UsuarioDAO.Create(user) != null)
+                    {
+                        TempData["msg_type"] = "success";
+                        TempData["msg"] = "Criado com sucesso!";
+                        return RedirectToAction("List");
+                    }
+
+                    TempData["msg_type"] = "danger";
+                    TempData["msg"] = "Erro na criação!";
+                    return View();
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
             }
-  
-            TempData["msg_type"] = "danger";
-            TempData["msg"] = "Erro na criação!";
-            return View();
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
+
+
+            
         }
-    
+
         [HttpGet]
         public ActionResult List()
         {
-            List<Usuario> users = UsuarioDAO.GetAll();
-            if (users == null)
+            if (Session["usuario_nivel"] != null) // Proteção de rota
             {
-                users = new List<Usuario>();
-                TempData["msg"] = "Erro ao buscar usuários";
-                TempData["msg_type"] = "danger";
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    List<Usuario> users = UsuarioDAO.GetAll();
+                    if (users == null)
+                    {
+                        users = new List<Usuario>();
+                        TempData["msg"] = "Erro ao buscar usuários";
+                        TempData["msg_type"] = "danger";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return View(users);
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            return View(users);
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            // Lista de itens do dropdown
-
-            Usuario u = UsuarioDAO.GetByID(id);
-            return View(u);
+            if (Session["usuario_nivel"] != null) // Proteção de rota
+            {
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    Usuario u = UsuarioDAO.GetByID(id);
+                    if (u != null)
+                    {
+                        return View(u);
+                    }
+                    TempData["msg"] = "Erro ao buscar usuário";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("List", "Usuario");
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public ActionResult Edit(Usuario usuario)
         {
-            if (UsuarioDAO.Update(usuario))
+            if (Session["usuario_nivel"] != null) // Proteção de rota
             {
-                TempData["msg_type"] = "success";
-                TempData["msg"] = "Alterado com sucesso!";
-                return RedirectToAction("List");
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    if (UsuarioDAO.Update(usuario))
+                    {
+                        TempData["msg_type"] = "success";
+                        TempData["msg"] = "Alterado com sucesso!";
+                        return RedirectToAction("List");
+                    }
+                    TempData["msg_type"] = "danger";
+                    TempData["msg"] = "Erro ao alterar. Verifique os campos!";
+                    return View(usuario);
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            TempData["msg_type"] = "danger";
-            TempData["msg"] = "Erro ao alterar. Verifique os campos!";
-            return View(usuario);
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            //TODO: Verifica se está autorizado a excluir
-
-            if(UsuarioDAO.Delete(id))
+            if (Session["usuario_nivel"] != null) // Proteção de rota
             {
-                TempData["msg"] = "Excluído com sucesso!";
-                TempData["msg_type"] = "success";
-                return RedirectToAction("List");
+                if (Convert.ToInt32(Session["usuario_nivel"]) == 0)
+                {
+                    if (UsuarioDAO.Delete(id))
+                    {
+                        TempData["msg"] = "Excluído com sucesso!";
+                        TempData["msg_type"] = "success";
+                        return RedirectToAction("List");
+                    }
+                    TempData["msg_type"] = "danger";
+                    TempData["msg"] = "Erro ao excluir!";
+                    return View();
+                }
+                else
+                {
+                    TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            TempData["msg_type"] = "danger";
-            TempData["msg"] = "Erro ao excluir!";
-            return View();
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
         }
     }
 }

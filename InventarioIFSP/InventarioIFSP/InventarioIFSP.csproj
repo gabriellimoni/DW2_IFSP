@@ -164,22 +164,26 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
+    <Compile Include="Controllers\ItemCategoriaController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\ItemStatusController.cs" />
+    <Compile Include="Controllers\LocalidadeCategoriaController.cs" />
+    <Compile Include="Controllers\LocalidadeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\ItemCategoriaDAO.cs" />
     <Compile Include="Database\ItemDAO.cs" />
+    <Compile Include="Database\ItemStatusDAO.cs" />
+    <Compile Include="Database\LocalidadeCategoriaDAO.cs" />
     <Compile Include="Database\LocalidadeDAO.cs" />
     <Compile Include="Database\UsuarioDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\SalaController.cs" />
     <Compile Include="Models\Inventario.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemCategoria.cs" />
     <Compile Include="Models\ItemStatus.cs" />
-    <Compile Include="Models\ItemSubCategoria.cs" />
     <Compile Include="Models\Localidade.cs" />
     <Compile Include="Models\LocalidadeCategoria.cs" />
     <Compile Include="Models\TiposNivel.cs" />
@@ -227,21 +231,32 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Principal.cshtml" />
-    <Content Include="Views\Inventario\Consulta.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\Usuario\List.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
-    <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\Inventario\Index.cshtml" />
+    <Content Include="Views\Item\List.cshtml" />
+    <Content Include="Views\Item\Create.cshtml" />
+    <Content Include="Views\ItemCategoria\Create.cshtml" />
+    <Content Include="Views\ItemCategoria\List.cshtml" />
+    <Content Include="Views\ItemCategoria\Edit.cshtml" />
+    <Content Include="Views\ItemStatus\Create.cshtml" />
+    <Content Include="Views\ItemStatus\List.cshtml" />
+    <Content Include="Views\ItemStatus\Edit.cshtml" />
+    <Content Include="Views\Item\Edit.cshtml" />
+    <Content Include="Views\LocalidadeCategoria\Create.cshtml" />
+    <Content Include="Views\LocalidadeCategoria\Edit.cshtml" />
+    <Content Include="Views\LocalidadeCategoria\List.cshtml" />
+    <Content Include="Views\Localidade\Create.cshtml" />
+    <Content Include="Views\Localidade\Edit.cshtml" />
+    <Content Include="Views\Localidade\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Img\" />
-    <Folder Include="Views\Item\" />
     <Folder Include="Views\Sala\" />
   </ItemGroup>
   <ItemGroup>

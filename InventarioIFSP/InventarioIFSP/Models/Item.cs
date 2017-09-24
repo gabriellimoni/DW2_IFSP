@@ -1,33 +1,28 @@
-﻿using System;
+﻿using InventarioIFSP.Database;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace InventarioIFSP.Models
 {
     public class Item
     {
-        public static List<Item> listarTodosItens()
-        {
-            return null; // comando para retornar todos os itens
-        }
-        // analisar quais filtros serão necessários e.g: Sub_Categoria, Categoria, Sala_Atual...
-
         public int ID { get; set; }
+
+        [Display(Name = "Patrimônio")]
         public string Patrimonio { get; set; }
         public ItemCategoria Categoria { get; set; }
-        public ItemSubCategoria Subcategoria { get; set; }
         public Localidade Localidade { get; set; }
-        public ItemStatus Status{ get; set; } // padronizar numeração do status ex: 0-alocado, 1-desalocado, 2-desmanche...
+        public ItemStatus Status{ get; set; } // Cadastro BD
 
-        public Item(int ID, string Patrimonio_Numero, ItemCategoria Categoria, ItemSubCategoria Sub_Categoria, Localidade Localidade, ItemStatus Status)
-        {
-            this.ID = ID;
-            this.Patrimonio = Patrimonio_Numero;
-            this.Categoria = Categoria;
-            this.Subcategoria = Sub_Categoria;
-            this.Localidade = Localidade;
-            this.Status = Status;
-        }
+        [Display(Name = "Observação")]
+        public string Observacao { get; set; } = "";
+        public IEnumerable<SelectListItem> Tipos_Status { get; set; }
+        public IEnumerable<SelectListItem> Localidades { get; set; }
+        public IEnumerable<SelectListItem> Categorias { get; set; }
+
     }
 }

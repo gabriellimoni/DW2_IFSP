@@ -25,17 +25,42 @@
                     </li>
                     @if (Session["usuario_nome"] != null) // aqui verifica se está logado
                     {
-                        <li class="nav-item">
-                            @Html.ActionLink("Inventário", "Index", "Inventario", null, new { @class = "nav-link" })
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="localidade_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Inventário
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="localidade_dropdown">
+                                @Html.ActionLink("Inventários", "Index", "Inventario", null, new { @class = "nav-link" })
+                            </div>
                         </li>
-
                         if (Convert.ToInt32(Session["usuario_nivel"]) < 2)
                         {
-                            <li class="nav-item">
-                                @Html.ActionLink("Itens", "Index", "Item", null, new { @class = "nav-link" })
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="item_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Localidades
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="item_dropdown">
+                                    @Html.ActionLink("Localidades", "Index", "Localidade", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Categorias", "Index", "LocalidadeCategoria", null, new { @class = "nav-link" })
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("Relatórios", "Relatorios", "Inventario", null, new { @class = "nav-link" })
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="item_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Itens
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="item_dropdown">
+                                    @Html.ActionLink("Itens", "Index", "Item", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Categorias", "Index", "ItemCategoria", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Status", "Index", "ItemStatus", null, new { @class = "nav-link" })
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="relatorio_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Relatórios
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="relatorio_dropdown">
+                                    @Html.ActionLink("Relatórios", "Relatorios", "Inventario", null, new { @class = "nav-link" })
+                                </div>
                             </li>
                         }
                         if (Convert.ToInt32(Session["usuario_nivel"]) < 1)
@@ -44,17 +69,15 @@
                                 @Html.ActionLink("Usuários", "Index", "Usuario", null, new { @class = "nav-link" })
                             </li>
                         }
-                            <li class="nav-item">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @Session["usuario_nome"]
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @Html.ActionLink("Minha conta", "MinhaConta", "Usuario", new { @class = "dropdown-item" })
-                                        @Html.ActionLink("Sair", "Logout", "Usuario", new { @class = "dropdown-item" })
-                                    </div>
-                                </div>
-                            </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="usuario_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Olá, @Session["usuario_nome"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="usuario_dropdown">
+                                @Html.ActionLink("Minha conta", "MinhaConta", "Usuario", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Sair", "Logout", "Usuario", null, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
                     }
                     else
                     {

@@ -2,112 +2,264 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace InventarioIFSP.Database
 {
     public class ItemDAO
     {
-        private NpgsqlConnection dbConn;
-        public ItemDAO()
+        private static NpgsqlConnection dbConn;
+
+        // Cria objeto de conexão, se já existir abre a conexão
+        private static void OpenConn()
         {
-            dbConn = Database.Conexao;
+            if (dbConn == null)
+            {
+                dbConn = Database.Conexao;
+            }
+            else
+            {
+                if (dbConn.State != ConnectionState.Open)
+                    dbConn.Open();
+            }
         }
 
-        public bool Create(Item item)
+        public static object Create(Item Item)
         {
+            NpgsqlParameter param;
+            if (dbConn == null)
+                dbConn = Database.Conexao;
+            else
+                dbConn.Open();
             try
             {
-                string sql = String.Format("INSERT INTO item(Patrimonio, Categoria, Subcategoria, Status) values('{0}',{1},{2},{3})",
-                    item.Patrimonio, item.Categoria, item.Subcategoria, item.Status);
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "INSERT INTO item(patrimonio, categoria, localidade, observacao, status)" +
+                    "values(@patrimonio, @categoria, @localidade, @observacao, @status) RETURNING id";
 
-                new NpgsqlCommand(sql, dbConn).ExecuteNonQuery();
+
+
+                param = new NpgsqlParameter("@patrimonio", NpgsqlTypes.NpgsqlDbType.Varchar, 20);
+                param.Value = Item.Patrimonio;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@categoria", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Categoria.ID;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@localidade", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Localidade.ID;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@observacao", NpgsqlTypes.NpgsqlDbType.Varchar, 255);
+                param.Value = Item.Observacao;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@status", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Status.Id;
+                command.Parameters.Add(param);
+
+                command.Prepare();
+                var result = command.ExecuteScalar();
                 dbConn.Close();
-                return true;
+
+                return result;
             }
             catch (Exception e)
             {
-                Console.WriteLine("INVENTARIO/itemDAO/Create:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/Create:: " + e);
                 dbConn.Close();
-                return false;
+                return null;
             }
         }
 
-        public bool Update(Item item)
+        
+        public static Boolean Update(Item Item)
         {
+            NpgsqlParameter param;
+            OpenConn();
             try
             {
-                NpgsqlConnection dbConn = Database.Conexao;
-                string sql = String.Format("UPDATE item(Patrimonio, Categoria, Subcategoria, Localidade, Status) values('{0}',{1},{2},{3},{4}) WHERE id = {5}",
-                    item.Patrimonio, item.Categoria, item.Subcategoria, item.Localidade, item.Status, item.ID);
-                new NpgsqlCommand(sql, dbConn).ExecuteNonQuery();
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "UPDATE item SET"
+                    + " patrimonio = @patrimonio, categoria = @categoria,"
+                    + " localidade = @localidade, observacao = @observacao, status=@status"
+                    + " WHERE id =@id  RETURNING id";
+
+                param = new NpgsqlParameter("@id", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.ID;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@patrimonio", NpgsqlTypes.NpgsqlDbType.Varchar, 20);
+                param.Value = Item.Patrimonio;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@categoria", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Categoria.ID;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@localidade", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Localidade.ID;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@observacao", NpgsqlTypes.NpgsqlDbType.Varchar, 255);
+                param.Value = Item.Observacao;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@status", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Item.Status.Id;
+                command.Parameters.Add(param);
+
+                command.Prepare();
+
+                var result = command.ExecuteScalar();
                 dbConn.Close();
-                return true;
+
+                if (result != null && (int)result > 0)
+                    return true;
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("INVENTARIO/ItemDAO/Update:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/Update:: " + e);
+
                 dbConn.Close();
-                return false;
             }
+            return false;
         }
 
-        public bool Delete(int ID)
+        
+        public static Boolean Delete(int Id)
         {
+            NpgsqlParameter param;
+            OpenConn();
             try
             {
-                NpgsqlConnection dbConn = Database.Conexao;
-                string sql = String.Format("DELETE FROM item WHERE id = {0}",
-                    ID);
-                new NpgsqlCommand(sql, dbConn).ExecuteNonQuery();
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "DELETE FROM item WHERE id = @id RETURNING 0";
+
+                param = new NpgsqlParameter("@id", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Id;
+                command.Parameters.Add(param);
+
+                var result = command.ExecuteScalar();
+
                 dbConn.Close();
-                return true;
+                if ((int)result == 0)
+                    return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("INVENTARIO/ItemDAO/Delete:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/Delete:: " + e);
                 dbConn.Close();
-                return false;
             }
+            return false;
         }
 
-        public bool AlteraLocalidade(int id, int localidade)
+        
+        public static Item GetByID(int Id)
         {
+            NpgsqlParameter param;
+            DataTable table = new DataTable();
+            Item Item = null;
+            OpenConn();
             try
             {
-                NpgsqlConnection dbConn = Database.Conexao;
-                string sql = String.Format("UPDATE item(Localidade) values({0}) WHERE id = {1}",
-                    localidade, id);
-                new NpgsqlCommand(sql, dbConn).ExecuteNonQuery();
-                dbConn.Close();
-                return true;
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "SELECT * FROM Item WHERE id = @id";
+
+                param = new NpgsqlParameter("@id", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = Id;
+                command.Parameters.Add(param);
+
+                NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
+                Adpt.Fill(table);
+
+                if (table.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        Item = new Item
+                        {
+                            ID = Convert.ToInt32(dr["id"]),
+                            Patrimonio = dr["patrimonio"].ToString(),
+                            Localidade = new Localidade { ID = Convert.ToInt32(dr["localidade"]) },
+                            Categoria = new ItemCategoria { ID = Convert.ToInt32(dr["categoria"]) },
+                            Observacao = dr["observacao"].ToString(),
+                            Status = new ItemStatus { Id = Convert.ToInt32(dr["status"]) }
+                        };
+                        return Item;
+                    }
+
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("INVENTARIO/ItemDAO/AlteraLocalidade:: " + e);
-                dbConn.Close();
-                return false;
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/GetByID:: " + e);
             }
+            dbConn.Close();
+            return null;
         }
 
-        public bool AlteraStatus(int id, int status)
+        
+        public static List<Item> GetAll()
         {
+            DataTable table = new DataTable();
+            List<Item> Items = new List<Item>();
+            OpenConn();
             try
             {
-                NpgsqlConnection dbConn = Database.Conexao;
-                string sql = String.Format("UPDATE item(Status) values({0}) WHERE id = {1}",
-                    status, id);
-                new NpgsqlCommand(sql, dbConn).ExecuteNonQuery();
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "SELECT * FROM Item";
+                NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
+                Adpt.Fill(table);
+
+                if (table.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        Items.Add(
+                            new Item
+                            {
+                                ID = Convert.ToInt32(dr["id"]),
+                                Patrimonio = dr["patrimonio"].ToString(),
+                                Localidade = new Localidade { ID = Convert.ToInt32(dr["localidade"]) },
+                                Categoria = new ItemCategoria { ID = Convert.ToInt32(dr["categoria"]) },
+                                Observacao = dr["observacao"].ToString(),
+                                Status = new ItemStatus { Id = Convert.ToInt32(dr["status"]) }
+                            }
+                        );
+                    }
+                }
+                foreach( Item item in Items)
+                {
+                    item.Categoria = ItemCategoriaDAO.GetByID(item.Categoria.ID);
+                }
+                foreach (Item item in Items)
+                {
+                    item.Localidade = LocalidadeDAO.GetByID(item.Localidade.ID);
+                }
+                foreach (Item item in Items)
+                {
+                    item.Status = ItemStatusDAO.GetByID(item.Status.Id);
+                }
                 dbConn.Close();
-                return true;
+                return Items;
             }
             catch (Exception e)
             {
-                Console.WriteLine("INVENTARIO/ItemDAO/AlteraStatus:: " + e);
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/GetAll:: " + e);
                 dbConn.Close();
-                return false;
+                return null;
             }
+
+
         }
+
+       
+
     }
 }
