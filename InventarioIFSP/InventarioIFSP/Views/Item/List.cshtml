@@ -1,0 +1,65 @@
+﻿@model IEnumerable<InventarioIFSP.Models.Item>
+
+@{
+    ViewBag.Title = "Lista de Itens";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"]">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["msg"]
+        </div>
+    }
+
+}
+<p>
+    @Html.ActionLink("Novo item", "Create", "Item", null, new { @class = "btn btn-dark", role = "button" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Patrimonio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Categoria)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Localidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>Ações</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patrimonio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Categoria.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Localidade.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status.Nome)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new { @class ="btn btn-primary"}) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
