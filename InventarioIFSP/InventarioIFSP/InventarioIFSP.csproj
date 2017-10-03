@@ -253,6 +253,8 @@
     <Content Include="Views\Localidade\Create.cshtml" />
     <Content Include="Views\Localidade\Edit.cshtml" />
     <Content Include="Views\Localidade\List.cshtml" />
+    <Content Include="Views\Item\Details.cshtml" />
+    <Content Include="Views\Usuario\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

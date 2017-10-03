@@ -144,5 +144,17 @@ namespace InventarioIFSP.Controllers
             TempData["msg_type"] = "danger";
             return RedirectToAction("Index");
         }
+
+        //GET: Item/Details
+        public ActionResult Details(int id)
+        {
+            if (id < 1)
+                return RedirectToAction("Index");
+            var item = new Item();
+            item.ID = id;
+            item.Patrimonio = "cadeira";
+            return View("Details", item);
+        }
+
     }
 }

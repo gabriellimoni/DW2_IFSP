@@ -246,5 +246,16 @@ namespace InventarioIFSP.Controllers
             TempData["msg_type"] = "warning";
             return RedirectToAction("Index", "Home");
         }
+
+        //GET: Item/Details
+        public ActionResult Details(int id)
+        {
+            if (id < 1)
+                return RedirectToAction("Index");
+            var usuario = new Usuario();
+            usuario.ID = id;
+            usuario.Nome = "Rosana";
+            return View("Details", usuario);
+        }
     }
 }
