@@ -28,7 +28,7 @@ namespace Inventario_IFSPPRC.Models
 
         [Display(Name = "Nível")]
         public int Nivel { get; set; }// padronizar ☺numeração das funções
-        public IEnumerable<SelectListItem> Niveis { get; set; } = UsuarioDAO.GetTipos();        
+        public List<SelectListItem> Niveis { get; set; }
         // 0 - Admin: Gerencia usuários
         // 1 - Supervisor: Cadastra novas categorias, subcategorias, localidades, relatorios
         // 2 - Usuário: altera a localização dos itens

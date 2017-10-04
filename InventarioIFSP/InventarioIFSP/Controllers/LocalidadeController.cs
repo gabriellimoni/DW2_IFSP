@@ -20,6 +20,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             LocalidadeCategoriaDAO.AtualizaCategorias();
             return View();
         }
@@ -27,6 +43,22 @@ namespace InventarioIFSP.Controllers
         [HttpPost]
         public ActionResult Create(Localidade local)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if(LocalidadeDAO.Create(local) != null)
@@ -47,6 +79,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult List()
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 LocalidadeCategoriaDAO.AtualizaCategorias();
@@ -61,6 +109,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 LocalidadeCategoriaDAO.AtualizaCategorias();
@@ -79,6 +143,22 @@ namespace InventarioIFSP.Controllers
         [HttpPost]
         public ActionResult Edit(Localidade local)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if (LocalidadeDAO.Update(local))
@@ -99,6 +179,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if (LocalidadeDAO.Delete(id))

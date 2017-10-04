@@ -9,7 +9,7 @@ namespace InventarioIFSP.Database
     public class Database
     {
 
-        private static string strConn = @"Server=127.0.0.1;Port=5432;Database=inventario;User Id=postgres;Password=amoracha;";
+        private static string strConn = @"Server=127.0.0.1;Port=5432;Database=inventario;User Id=postgres;Password=postgres;";
 
         public static NpgsqlConnection Conexao
         {

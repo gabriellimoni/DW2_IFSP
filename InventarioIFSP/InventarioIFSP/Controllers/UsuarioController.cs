@@ -43,9 +43,9 @@ namespace InventarioIFSP.Controllers
         [HttpPost]
         public ActionResult Login(Usuario usuario)
         {
-            string valor = Request.Params["valor"];
+            string username = Request.Params["email"];
             string senha = Request.Params["senha"];
-            Usuario u = UsuarioDAO.Login(usuario.Email, usuario.Senha);
+            Usuario u = UsuarioDAO.Login(username, senha);
             if (u != null)
             {
                 Session["usuario_id"] = u.ID;

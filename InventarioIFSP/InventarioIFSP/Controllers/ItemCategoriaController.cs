@@ -24,6 +24,22 @@ namespace InventarioIFSP.Controllers
         [HttpPost]
         public ActionResult Create(ItemCategoria cat)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null) 
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if(ItemCategoriaDAO.Create(cat) != null)
@@ -45,6 +61,22 @@ namespace InventarioIFSP.Controllers
 
         public ActionResult Edit(int id)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 LocalidadeCategoriaDAO.AtualizaCategorias();
@@ -63,6 +95,22 @@ namespace InventarioIFSP.Controllers
         [HttpPost]
         public ActionResult Edit(ItemCategoria cat)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if (ItemCategoriaDAO.Update(cat))
@@ -83,6 +131,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 if (ItemCategoriaDAO.Delete(id))
@@ -103,6 +167,22 @@ namespace InventarioIFSP.Controllers
         [HttpGet]
         public ActionResult List()
         {
+            // Início: Proteção de rota
+            if (Session["usuario_nivel"] == null)
+            {
+                TempData["msg"] = "Necessário estar logado!";
+                TempData["msg_type"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (Convert.ToInt32(Session["usuario_nivel"]) > 1)
+            {
+                TempData["msg"] = "Você não tem autorização para acessar esta área!";
+                TempData["msg_type"] = "danger";
+                return RedirectToAction("Index", "Home");
+            }
+            // Fim: Proteção de Rota
+
             try
             {
                 LocalidadeCategoriaDAO.AtualizaCategorias();

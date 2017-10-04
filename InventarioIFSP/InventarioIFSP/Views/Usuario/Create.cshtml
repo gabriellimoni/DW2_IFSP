@@ -59,7 +59,7 @@
                     @Html.LabelFor(model => model.Nivel, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(
                                 model => model.Nivel,
-                                Model.Niveis,
+                                InventarioIFSP.Database.UsuarioDAO.GetTipos(),
                                 new { @class = "form-control" }
                             )
                     @Html.ValidationMessageFor(model => model.Nivel, "", new { @class = "text-danger" })

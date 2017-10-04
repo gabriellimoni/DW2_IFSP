@@ -277,12 +277,12 @@ namespace InventarioIFSP.Database
         // TODO, após implementar hash, necessário alterar aqui
         // Método de Login - Retorna objeto usuário
         // Campo pesquisa, pode ser pronturario ou email
-        public static Usuario Login(string valor, string senha)
+        public static Usuario Login(string username, string senha)
         {
-            Usuario u = LoginViaEmail(valor, senha);
+            Usuario u = LoginViaEmail(username, senha);
             if (u == null)
             {
-                return LoginViaProntuario(valor, senha);
+                return LoginViaProntuario(username, senha);
             }
             return u;
           
