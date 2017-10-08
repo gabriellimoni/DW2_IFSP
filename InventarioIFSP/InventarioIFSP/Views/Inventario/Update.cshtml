@@ -1,0 +1,187 @@
+﻿@model InventarioIFSP.Models.Inventario
+
+@{
+
+    ViewBag.Title = "Atualizar inventário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    InventarioIFSP.Models.Item item = new InventarioIFSP.Models.Item();
+
+    InventarioIFSP.Models.Localidade localidade = TempData["localidade"] as InventarioIFSP.Models.Localidade;
+    List<InventarioIFSP.Models.Item> itens = TempData["itens"] as List<InventarioIFSP.Models.Item>;
+    List<InventarioIFSP.Models.Item> todos_itens = TempData["todos_itens"] as List<InventarioIFSP.Models.Item>;
+    List<SelectListItem> lista_status = TempData["lista_status"] as List<SelectListItem>;
+
+}
+
+<script type="text/javascript">
+    var list = [];
+    function saveListOnStorage() {
+        var jsonStr = JSON.stringify(list);
+        localStorage.setItem("list", jsonStr);
+    }
+
+    function addItemToList(id, patrimonio, categoria, localidade, id_local) {
+        list.unshift({ "id": id, "patrimonio": patrimonio, "categoria": categoria, "localidade": localidade, "id_local": id_local });
+    }
+    @foreach(InventarioIFSP.Models.Item i in todos_itens)
+    {
+        @:addItemToList("@i.ID", "@i.Patrimonio", "@i.Categoria.Nome", "@i.Localidade.Nome", "@i.Localidade.ID");
+    }
+    saveListOnStorage();
+</script>
+
+
+<div class="row justify-content-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+<div class="row">
+    <div class="col-10">
+        @Html.ActionLink("Alterar localidade", "SelecionaLocalidade", null, new { @class = "btn btn-dark" })
+    </div>
+</div>
+<div class="row text-center justify-content-center">
+    <h3>Localidade</h3>
+</div>
+<hr />
+
+<!-- Modal -->
+<div class="modal fade" id="modalMoverItem" tabindex="-1" role="dialog" aria-labelledby="labelMoverItem" aria-hidden="true" onblur="limpaCampoBusca();">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelMoverItem">Mover itens para: @localidade.Nome</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="limpaCampoBusca();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 text-center">
+                        <label for="campo_busca">Buscar por patrimônio</label>
+                        <input id="campo_busca" class="form-control" placeholder="Patrimônio" onkeyup="filterItens(this.value)"/>
+                        <br />
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <input hidden="hidden" id="localidade_id" value="@localidade.ID"/>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Patrimônio</th>
+                                    <th>Categoria</th>
+                                    <th>Localidade</th>
+                                    <th>Mover</th>
+                                </tr>                                
+                            </thead>
+                            <tbody id="tbody_itens">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End modal-->
+
+<div class="row justify-content-center text-center">
+    <div class="col-4">
+            <label for="local_nome">Nome </label>
+            <input id="local_nome" value="@localidade.Nome" class="form-control" disabled="disabled" />
+
+    </div>
+    <div class="col-4">
+        <label for="local_bloco ">Bloco </label>
+        <input id="local_bloco" value="@localidade.Bloco" class="form-control" disabled="disabled" />
+    </div>
+</div>
+<br />
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"] text-center">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["msg"]
+        </div>
+    }
+}
+<div id="msg">
+
+</div>
+<div class="row justify-content-center">
+    <div class="col-10">
+        <h3 class="text-center">Itens</h3><br />
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <button class="btn btn-primary btn-block" 
+                        data-toggle="modal"
+                        data-target="#modalMoverItem">Incluir item</button>
+            </div>
+        </div>
+        <br />
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Patrimônio")
+                </th>
+                <th>
+                    @Html.DisplayName("Categoria")
+                </th>
+                <th>
+                    @Html.DisplayName("Status")
+                </th>
+                <th>@Html.DisplayName("Observação")</th>
+            </tr>
+
+            @foreach (var i in itens)
+            {
+                <tr id="row_itens">
+                    <td>
+                        @i.Patrimonio
+                    </td>
+                    <td>
+                        @i.Categoria.Nome
+                    </td>
+                        <td>
+                            <select class="form-control" onchange="updateItemStatus(@i.ID, this.value)">
+                                @foreach (SelectListItem status in lista_status)
+                                {
+                                    if (i.Status.Id == Convert.ToInt32(status.Value))
+                                    {
+                                        <option value="@status.Value" selected> @status.Text </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status.Value"> @status.Text </option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+
+                        <div class="form-group form-inline">
+                            <input type="text" id="input_obs_@i.ID" value="@i.Observacao" class="form-control"
+                                    style="margin-right: 5px"
+                                    onfocus="showButton(@i.ID)"
+                                    onblur="hideButton(@i.ID)" />
+                            <button class="btn btn-success" id="btn_obs_@i.ID"
+                                    onclick="updateItemObs(@i.ID)"
+                                    style="visibility: hidden ">
+                                Salvar
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+</div>
+
+@Scripts.Render("~/Scripts/atualiza-inventario.js")

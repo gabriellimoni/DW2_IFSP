@@ -171,6 +171,7 @@
     <Compile Include="Controllers\LocalidadeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\InventarioDAO.cs" />
     <Compile Include="Database\ItemCategoriaDAO.cs" />
     <Compile Include="Database\ItemDAO.cs" />
     <Compile Include="Database\ItemStatusDAO.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Models\Inventario.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemCategoria.cs" />
+    <Compile Include="Models\ItemInventario.cs" />
     <Compile Include="Models\ItemStatus.cs" />
     <Compile Include="Models\Localidade.cs" />
     <Compile Include="Models\LocalidadeCategoria.cs" />
@@ -200,7 +202,9 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\atualiza-inventario.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\item-list.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -237,7 +241,6 @@
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Login.cshtml" />
-    <Content Include="Views\Inventario\Index.cshtml" />
     <Content Include="Views\Item\List.cshtml" />
     <Content Include="Views\Item\Create.cshtml" />
     <Content Include="Views\ItemCategoria\Create.cshtml" />
@@ -255,6 +258,10 @@
     <Content Include="Views\Localidade\List.cshtml" />
     <Content Include="Views\Item\Details.cshtml" />
     <Content Include="Views\Usuario\Details.cshtml" />
+    <Content Include="Views\Inventario\Inventario.cshtml" />
+    <Content Include="Views\Inventario\SelecionaLocalidade.cshtml" />
+    <Content Include="Views\Inventario\Update.cshtml" />
+    <Content Include="Views\Inventario\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

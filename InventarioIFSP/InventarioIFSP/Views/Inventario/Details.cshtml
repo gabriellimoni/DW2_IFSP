@@ -1,0 +1,54 @@
+﻿@model InventarioIFSP.Models.Inventario
+
+@{
+    ViewBag.Title = "Detalhamento de inventário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<InventarioIFSP.Models.ItemInventario> itens = TempData["itens"] as List<InventarioIFSP.Models.ItemInventario>;
+}
+
+<div class="row justify-content-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"] text-center">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["msg"]
+        </div>
+    }
+}
+<div class="row justify-content-center">
+    <div class="col-10">
+        <h2>Inventário: @Model.Ano/@Model.Semestre</h2>
+    </div>
+</div>
+    
+<div class="row justify-content-center">
+    <div class="col-10">
+        <table class="table table-stripped">
+                <tr>
+                    <td>Patrimônio</td>
+                    <td>Categoria</td>
+                    <td>Localidade</td>
+                    <td>Bloco</td>
+                    <td>Status</td>
+                </tr>
+            @foreach(InventarioIFSP.Models.ItemInventario i in itens)
+            {
+                <tr>
+                    <td>@i.Patrimonio</td>
+                    <td>@i.Categoria</td>
+                    <td>@i.Localidade</td>
+                    <td>@i.Bloco</td>
+                    <td>@i.Status</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+

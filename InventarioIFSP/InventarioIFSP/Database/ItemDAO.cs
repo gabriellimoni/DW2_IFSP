@@ -159,7 +159,6 @@ namespace InventarioIFSP.Database
             return false;
         }
 
-        
         public static Item GetByID(int Id)
         {
             NpgsqlParameter param;
@@ -191,6 +190,9 @@ namespace InventarioIFSP.Database
                             Observacao = dr["observacao"].ToString(),
                             Status = new ItemStatus { Id = Convert.ToInt32(dr["status"]) }
                         };
+                        Item.Categoria = ItemCategoriaDAO.GetByID(Item.Categoria.ID);
+                        Item.Status = ItemStatusDAO.GetByID(Item.Status.Id);
+                        Item.Localidade = LocalidadeDAO.GetByID(Item.Localidade.ID);
                         return Item;
                     }
 
@@ -204,16 +206,22 @@ namespace InventarioIFSP.Database
             return null;
         }
 
-        
-        public static List<Item> GetAll()
+        public static List<Item> GetByLocalidade(int id_localidade)
         {
             DataTable table = new DataTable();
-            List<Item> Items = new List<Item>();
+            List<Item> Itens = new List<Item>();
             OpenConn();
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
-                command.CommandText = "SELECT * FROM Item";
+                NpgsqlParameter param;
+                command.CommandText = "SELECT * FROM Item WHERE localidade = @id_localidade";
+
+                param = new NpgsqlParameter("@id_localidade", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = id_localidade;
+                command.Parameters.Add(param);
+
+
                 NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
                 Adpt.Fill(table);
 
@@ -221,7 +229,7 @@ namespace InventarioIFSP.Database
                 {
                     foreach (DataRow dr in table.Rows)
                     {
-                        Items.Add(
+                        Itens.Add(
                             new Item
                             {
                                 ID = Convert.ToInt32(dr["id"]),
@@ -234,20 +242,72 @@ namespace InventarioIFSP.Database
                         );
                     }
                 }
-                foreach( Item item in Items)
+                foreach (Item item in Itens)
                 {
                     item.Categoria = ItemCategoriaDAO.GetByID(item.Categoria.ID);
                 }
-                foreach (Item item in Items)
+                foreach (Item item in Itens)
                 {
                     item.Localidade = LocalidadeDAO.GetByID(item.Localidade.ID);
                 }
-                foreach (Item item in Items)
+                foreach (Item item in Itens)
                 {
                     item.Status = ItemStatusDAO.GetByID(item.Status.Id);
                 }
                 dbConn.Close();
-                return Items;
+                return Itens;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/ItemDAO/GetByLocalidade:: " + e);
+            }
+            dbConn.Close();
+            return null;
+        }
+
+        public static List<Item> GetAll()
+        {
+            DataTable table = new DataTable();
+            List<Item> Itens = new List<Item>();
+            OpenConn();
+            try
+            {
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "SELECT * FROM Item";
+                NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
+                Adpt.Fill(table);
+
+                if (table.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        Itens.Add(
+                            new Item
+                            {
+                                ID = Convert.ToInt32(dr["id"]),
+                                Patrimonio = dr["patrimonio"].ToString(),
+                                Localidade = new Localidade { ID = Convert.ToInt32(dr["localidade"]) },
+                                Categoria = new ItemCategoria { ID = Convert.ToInt32(dr["categoria"]) },
+                                Observacao = dr["observacao"].ToString(),
+                                Status = new ItemStatus { Id = Convert.ToInt32(dr["status"]) }
+                            }
+                        );
+                    }
+                }
+                foreach( Item item in Itens)
+                {
+                    item.Categoria = ItemCategoriaDAO.GetByID(item.Categoria.ID);
+                }
+                foreach (Item item in Itens)
+                {
+                    item.Localidade = LocalidadeDAO.GetByID(item.Localidade.ID);
+                }
+                foreach (Item item in Itens)
+                {
+                    item.Status = ItemStatusDAO.GetByID(item.Status.Id);
+                }
+                dbConn.Close();
+                return Itens;
             }
             catch (Exception e)
             {

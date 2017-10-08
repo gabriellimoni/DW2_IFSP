@@ -1,0 +1,126 @@
+﻿@model IEnumerable<InventarioIFSP.Models.Inventario>
+
+@{
+    ViewBag.Title = "Inventário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalConfirmaConsolidacao" tabindex="-1" role="dialog" aria-labelledby="labelConsolida" aria-hidden="true" onblur="limpaCampoBusca();">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelConsolida">Consolidar inventário: @TempData["semestre_ano"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="limpaCampoBusca();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 text-center">
+                        <div class="alert alert-warning">
+                            <p>Atenção! O inventário consolidado <b>NÃO</b> pode ser alterado</p>
+                            <p>Deseja confirmar?</p>
+                            <a class="btn btn-danger" href="/Inventario/Create">CONSOLIDAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="modalConfirmaExclusao" tabindex="-1" role="dialog" aria-labelledby="labelExclui" aria-hidden="true" onblur="limpaCampoBusca();">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelExclui">Excluir inventário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 text-center">
+                        <div class="alert alert-danger">
+                            <input hidden="hidden" id="input_inventario_id" />
+                            <p>Atenção! Este é um caminho sem volta. Os dados excluídos <b>NÃO</b> poderão ser recuperados</p>
+                            <p>Tem certeza que deseja excluir?</p>
+                            <a class="btn btn-warning" href="#" onclick="excluirInventario();">Tenho certeza</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End modal-->
+
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-@TempData["msg_type"] text-center">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["msg"]
+        </div>
+        }
+    }
+    <div class="row justify-content-center">
+    <div class="col-10" id="botao-consolida">
+        @if (TempData["semestre_ano"] != null)
+        {
+            <button class="btn btn-danger btn-block"
+                    data-toggle="modal"
+                    data-target="#modalConfirmaConsolidacao"
+                    title = "Uma janela de confirmação será exibida a seguir">
+                    CONSOLIDAR INVENTÁRIO @TempData["semestre_ano"]
+            </button>
+        }
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Semestre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ano)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Consolidado)
+                </th>
+                <th>Ações</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Semestre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ano)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Consolidado)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Detalhar", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                        <button data-toggle="modal"
+                                data-target="#modalConfirmaExclusao"
+                                class="btn btn-danger"
+                                onclick="defineIDExclusao(@item.Id);">Excluir</button>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

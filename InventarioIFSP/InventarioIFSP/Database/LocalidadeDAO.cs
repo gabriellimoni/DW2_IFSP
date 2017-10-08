@@ -340,5 +340,20 @@ namespace InventarioIFSP.Database
             
         }
 
+        public static List<SelectListItem> GetSelectList()
+        {
+            List<Localidade> localidades = GetAll();
+            List<SelectListItem> lista = new List<SelectListItem>();
+            foreach( Localidade local in localidades)
+            {
+                lista.Add(new SelectListItem
+                {
+                    Value = local.ID.ToString(),
+                    Text = local.Nome + " - " + local.Bloco
+                });
+            }
+            return lista;
+        }
+
     }
 }

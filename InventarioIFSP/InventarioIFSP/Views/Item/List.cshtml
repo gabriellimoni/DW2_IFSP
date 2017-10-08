@@ -3,7 +3,18 @@
 @{
     ViewBag.Title = "Lista de Itens";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> lista_status = TempData["lista_status"] as List<SelectListItem>;
+
 }
+@Scripts.Render("~/Scripts/item-list.js")
+<script type="text/javascript">
+    @foreach (var i in Model)
+    {
+        @:addItem("@i.ID", "@i.Patrimonio", "@i.Categoria.Nome", "@i.Localidade.Nome", "@i.Status.Nome", "@i.Status.Id");
+    }
+    saveListOnStorage();
+</script>
 
 <div class="row justify-content-center">
     <h2>@ViewBag.Title</h2>
@@ -24,42 +35,64 @@
 <p>
     @Html.ActionLink("Novo item", "Create", "Item", null, new { @class = "btn btn-dark", role = "button" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Patrimonio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Categoria)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Localidade)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>Ações</th>
-    </tr>
+<div class="row justify-content-end text-center">
+    <div class="col-2">
+        <label for="campo_busca">Buscar por patrimônio:</label>
+        <input id="campo_busca" class="form-control" onkeyup="filterItensList();" placeholder="Patrimônio" />
+    </div>
+    <div class="col-2">
+        <label for="select_status">Filtrar por status</label>
+        <select class="form-control" id="select_status" onchange="filterItensList();">
+            <option value="-1">Selecione</option>
+            @foreach( SelectListItem status in lista_status)
+            {
+                <option value="@status.Value">@status.Text</option>
+            }
+        </select>
+    </div>
+</div>
+<br />
+<div class="row justify-content-center">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Patrimonio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Categoria)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Localidade)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>Ações</th>
+            </tr>
+            <tbody id="tbody-list-itens">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Patrimonio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Localidade.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status.Nome)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalhes", "Details", new { id = item.ID }, new { @class = "btn btn-success" }) |
+                            @Html.ActionLink("Alterar", "Edit", new { id = item.ID }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Excluir", "Delete", new { id = item.ID }, new { @class = "btn btn-danger" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patrimonio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Categoria.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Localidade.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status.Nome)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new { @class ="btn btn-primary"}) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
-
-</table>
