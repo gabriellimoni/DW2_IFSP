@@ -1,0 +1,97 @@
+﻿@model InventarioIFSP.ReportFramework.ReportFiltersViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @Styles.Render("~/Content/modal.css")
+}
+
+<h2>Relatórios</h2>
+
+
+    <button id="btn-modal-rep-class" class="btn btn-primary" onclick="openModal(this.id);"> Relatório </button>
+
+    <div id="rep-class" class="modal">
+        <div class="modal-content">
+            @using (Html.BeginForm("GenerateReportTest", "Relatorio", FormMethod.Post, new { target = "_blank" }))
+            {
+                <span class="close" id="span-modal-rep-class" onclick="closeModal(this.id);">&times;</span>
+                <!-- conteúdo da consulta:
+                    Localidade, patrimonio, categoria, observação, status 
+                     
+                    Filtros:
+                    Localidade, categoria loc, categoria item, status
+                    -->
+                // localidade
+                @Html.LabelFor(model => model.LOC, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(
+                                model => model.LOC.ID,
+                                InventarioIFSP.Database.LocalidadeDAO.lista_localidades,
+                                "Todas",
+                                new { @class = "form-control" }
+                            )
+                // localidade categoria
+                //@Html.LabelFor(model => model.LOCCAT, htmlAttributes: new { @class = "control-label" })
+                //@Html.DropDownListFor(
+                //                model => model.LOCCAT.ID,
+                //                InventarioIFSP.Database.LocalidadeCategoriaDAO.lista_categorias,
+                //                "Todas",
+                //                new { @class = "form-control" }
+                //            )
+                // item categoria
+                @Html.LabelFor(model => model.ITEMCAT, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(
+                                model => model.ITEMCAT.ID,
+                                InventarioIFSP.Database.ItemCategoriaDAO.lista_categorias,
+                                "Todas",
+                                new { @class = "form-control" }
+                            )
+                // status
+                @Html.LabelFor(model => model.STA, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(
+                                model => model.STA.Id,
+                                InventarioIFSP.Database.ItemStatusDAO.lista_status,
+                                "Todos",
+                                new { @class = "form-control" }
+                            )
+                <br />
+                
+                <input type="submit" value="Gerar Relatório" id="btnGenerateClassReport" class="btn btn-primary" />
+            }
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        function openModal(obj) {
+            var modal;
+
+            if (obj == "btn-modal-rep-class") {
+                // Get the modal
+                modal = document.getElementById('rep-class');
+                modal.style.display = "block";
+            }
+            else if (true)
+                ;
+            else
+                ;
+               
+        }
+
+        function closeModal(obj) {
+            var modal;
+            if (obj == "span-modal-rep-class") {
+                // Get the modal
+                modal = document.getElementById('rep-class');
+                modal.style.display = "none";
+            }
+            else if (true)
+                ;
+            else
+                ;
+        }
+
+        
+        // adicionar os botões nos ifs conforme for fazendo relatórios...
+    </script>
+

@@ -188,12 +188,20 @@
     <Compile Include="Models\ItemStatus.cs" />
     <Compile Include="Models\Localidade.cs" />
     <Compile Include="Models\LocalidadeCategoria.cs" />
+    <Compile Include="Models\Relatorio.cs" />
+    <Compile Include="Models\RelatorioController.cs" />
     <Compile Include="Models\TiposNivel.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportFramework\Report.cs" />
+    <Compile Include="ReportFramework\ReportFiltersViewModel.cs" />
+    <Compile Include="ReportFramework\ReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Img\logo-ifsp.jpg" />
+    <Content Include="Content\modal.css" />
+    <Content Include="Content\report.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -262,10 +270,11 @@
     <Content Include="Views\Inventario\SelecionaLocalidade.cshtml" />
     <Content Include="Views\Inventario\Update.cshtml" />
     <Content Include="Views\Inventario\Details.cshtml" />
+    <Content Include="Views\Relatorio\Index.cshtml" />
+    <Content Include="Views\ReportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Img\" />
     <Folder Include="Views\Sala\" />
   </ItemGroup>
   <ItemGroup>

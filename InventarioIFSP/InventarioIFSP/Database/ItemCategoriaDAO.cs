@@ -14,19 +14,19 @@ namespace InventarioIFSP.Database
         private static NpgsqlConnection dbConn;
         public static List<SelectListItem> lista_categorias;
 
-        // Cria objeto de conexão, se já existir abre a conexão
-        private static void OpenConn()
-        {
-            if (dbConn == null)
+            // Cria objeto de conexão, se já existir abre a conexão
+            private static void OpenConn()
             {
-                dbConn = Database.Conexao;
+                if (dbConn == null)
+                {
+                    dbConn = Database.Conexao;
+                }
+                else
+                {
+                    if (dbConn.State != ConnectionState.Open)
+                        dbConn.Open();
+                }
             }
-            else
-            {
-                if (dbConn.State != ConnectionState.Open)
-                    dbConn.Open();
-            }
-        }
 
         // Cria subcategoria
         public static object Create(ItemCategoria categoria)

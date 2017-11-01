@@ -1,0 +1,42 @@
+﻿.content {
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+
+.row-striped:nth-of-type(odd) {
+    background-color: #efefef;
+}
+
+.row-striped:nth-of-type(even) {
+    background-color: #ffffff;
+}
+
+
+
+
+.title{
+    text-align:left;
+    margin-left:10%;
+    margin-right:10%;
+    margin-top:2%;
+}
+
+.header {
+    text-align: center;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.footer{
+    text-align: center;
+}
+
+
+img{
+    width:35%;
+}
+header{
+    text-align:center;
+}

@@ -30,10 +30,11 @@ namespace InventarioIFSP.Database
         public static object Create(Item Item)
         {
             NpgsqlParameter param;
-            if (dbConn == null)
-                dbConn = Database.Conexao;
-            else
-                dbConn.Open();
+            OpenConn();
+            //if (dbConn == null)
+            //    dbConn = Database.Conexao;
+            //else
+            //    dbConn.Open();
             try
             {
                 NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
