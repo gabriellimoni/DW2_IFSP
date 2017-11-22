@@ -1,0 +1,48 @@
+﻿@model InventarioIFSP.ReportFramework.ReportViewModel
+
+@{
+    Layout = null;
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/report.css")
+    <title>Relatório</title>
+</head>
+<body>
+    <header>
+        <img src="~/Content/Img/logo-ifsp.jpg" />
+    </header>
+    <section class="title">
+        <h2>
+            @Model.Title
+        </h2>
+    </section>
+    <section class="header">
+        <h3>
+            @Model.Header
+        </h3>
+    </section>
+
+
+    <section class="content">
+        @Html.Raw(Model.Columns)
+        @foreach (var row in Model.Contents)
+        {
+            @Html.Raw((string)row.ToString());
+        }
+    </section>
+
+    <section class="footer">
+        <h3>
+            @Model.Footer
+        </h3>
+    </section>
+</body>
+</html>
