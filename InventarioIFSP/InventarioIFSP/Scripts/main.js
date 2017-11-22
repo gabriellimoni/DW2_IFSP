@@ -22,3 +22,8 @@ function excluirInventario() {
 function defineIDExclusao(id) {
     document.getElementById('input_inventario_id').value = id;
 }
+
+function disableMe(elem) {
+    elem.setAttribute('disabled', 'disabled');
+    elem.innerHTML = 'Aguarde...';
+}

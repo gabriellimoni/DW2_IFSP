@@ -1,9 +1,8 @@
 ﻿using InventarioIFSP.Database;
 using InventarioIFSP.Models;
+using Rotativa.MVC;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace InventarioIFSP.Controllers
@@ -210,7 +209,10 @@ namespace InventarioIFSP.Controllers
             // Fim: Proteção de Rota
 
             TempData["itens"] = InventarioDAO.GetItens(id);
-            return View(InventarioDAO.GetByID(id));
+            TempData["usuario"] = Session["usuario_nome"];
+            var inventario = InventarioDAO.GetByID(id);
+            return new ViewAsPdf(inventario);
+            //return View(inventario);
         }
 
     }

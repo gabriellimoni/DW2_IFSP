@@ -2,13 +2,15 @@
 
 @{
     ViewBag.Title = "Detalhamento de inventário";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
 
     List<InventarioIFSP.Models.ItemInventario> itens = TempData["itens"] as List<InventarioIFSP.Models.ItemInventario>;
 }
 
-<div class="row justify-content-center">
-    <h2>@ViewBag.Title</h2>
+<div class="row justify-content-center text-center">
+    <div class="col-12">
+        <h2>@ViewBag.Title</h2>
+    </div>
 </div>
 
 @{
@@ -23,20 +25,22 @@
     }
 }
 <div class="row justify-content-center">
-    <div class="col-10">
-        <h2>Inventário: @Model.Ano/@Model.Semestre</h2>
+    <div class="col-12">
+        <h3><b>Inventário:</b> @Model.Ano/@Model.Semestre</h3>
+        <p><b>Usuário:</b> @TempData["usuario"]</p>
+        <p><b>Emitido em:</b> @DateTime.Now</p>
     </div>
 </div>
     
 <div class="row justify-content-center">
-    <div class="col-10">
+    <div class="col-12">
         <table class="table table-stripped">
                 <tr>
-                    <td>Patrimônio</td>
-                    <td>Categoria</td>
-                    <td>Localidade</td>
-                    <td>Bloco</td>
-                    <td>Status</td>
+                    <td><b>Patrimônio</b></td>
+                    <td><b>Categoria</b></td>
+                    <td><b>Localização</b></td>
+                    <td><b>Bloco</b></td>
+                    <td><b>Status</b></td>
                 </tr>
             @foreach(InventarioIFSP.Models.ItemInventario i in itens)
             {

@@ -2,9 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row justify-content-center">
-    <h2>@ViewBag.Title</h2>
-</div>
+
 
 @{
     if (TempData["msg"] != null)
@@ -19,3 +17,9 @@
     }
 
 }
+
+<div class="row justify-content-center text-center">
+    <div class="col-md-10">
+        <img src="~/Resources/logo-full-960x480.png" class="img-fluid" width="700">
+    </div>
+</div>

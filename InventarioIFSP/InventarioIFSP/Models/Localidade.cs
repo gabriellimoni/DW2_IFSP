@@ -10,6 +10,7 @@ namespace InventarioIFSP.Models
 {
     public class Localidade
     {
+
         public int ID { get; set; }
 
         [Required]

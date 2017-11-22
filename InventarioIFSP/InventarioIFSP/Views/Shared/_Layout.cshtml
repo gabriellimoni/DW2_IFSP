@@ -10,7 +10,8 @@
 <body>
    
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        @Html.ActionLink("INVENTÁRIO CAE IFSP Piracicaba", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        @*@Html.ActionLink("INVENTÁRIO CAE IFSP, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+        <a href="/" class="navbar-brand"><img src="~/Resources/logo-icon-100x100.png" width="30"/> Inventário</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -38,10 +39,10 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="item_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Localidades
+                                    Localizações
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="item_dropdown">
-                                    @Html.ActionLink("Localidades", "Index", "Localidade", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Localizações", "Index", "Localidade", null, new { @class = "nav-link" })
                                     @Html.ActionLink("Categorias", "Index", "LocalidadeCategoria", null, new { @class = "nav-link" })
                                 </div>
                             </li>
@@ -55,14 +56,14 @@
                                     @Html.ActionLink("Status", "Index", "ItemStatus", null, new { @class = "nav-link" })
                                 </div>
                             </li>
-                            <li class="nav-item dropdown">
+                            @*<li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="relatorio_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Relatórios
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="relatorio_dropdown">
                                     @Html.ActionLink("Relatórios", "Relatorios", "Inventario", null, new { @class = "nav-link" })
                                 </div>
-                            </li>
+                            </li>*@
                         }
                         if (Convert.ToInt32(Session["usuario_nivel"]) < 1)
                         {
@@ -75,7 +76,7 @@
                                 Olá, @Session["usuario_nome"]
                             </a>
                             <div class="dropdown-menu" aria-labelledby="usuario_dropdown">
-                                @Html.ActionLink("Minha conta", "MinhaConta", "Usuario", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Minha conta", "MyData", "Usuario", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Sair", "Logout", "Usuario", null, new { @class = "dropdown-item" })
                             </div>
                         </li>

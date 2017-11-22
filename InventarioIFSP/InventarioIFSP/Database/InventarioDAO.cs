@@ -207,7 +207,52 @@ namespace InventarioIFSP.Database
             dbConn.Close();
             return null;
         }
-        
+
+        public static Inventario GetByYearSemester(int ano, int semestre)
+        {
+            NpgsqlParameter param;
+            DataTable table = new DataTable();
+            Inventario Inventario = null;
+            OpenConn();
+            try
+            {
+                NpgsqlCommand command = new NpgsqlCommand(null, dbConn);
+                command.CommandText = "SELECT * FROM Inventario WHERE semestre = @semestre AND ano = @ano";
+
+                param = new NpgsqlParameter("@semestre", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = semestre;
+                command.Parameters.Add(param);
+
+                param = new NpgsqlParameter("@ano", NpgsqlTypes.NpgsqlDbType.Integer, 0);
+                param.Value = ano;
+                command.Parameters.Add(param);
+
+                NpgsqlDataAdapter Adpt = new NpgsqlDataAdapter(command);
+                Adpt.Fill(table);
+
+                if (table.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        Inventario = new Inventario
+                        {
+                            Id = Convert.ToInt32(dr["id"]),
+                            Semestre = Convert.ToInt32(dr["semestre"]),
+                            Ano = Convert.ToInt32(dr["ano"]),
+                            Consolidado = dr["consolidado"].ToString()
+                        };
+                        return Inventario;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("INVENTARIO/InventarioDAO/GetByID:: " + e);
+            }
+            dbConn.Close();
+            return null;
+        }
+
         // Verifica que se já existe inventário do semestre atual
         // Se já estiver, retorna true
         public static Boolean CheckStatus()

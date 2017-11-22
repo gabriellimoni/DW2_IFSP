@@ -25,7 +25,7 @@
                         <div class="alert alert-warning">
                             <p>Atenção! O inventário consolidado <b>NÃO</b> pode ser alterado</p>
                             <p>Deseja confirmar?</p>
-                            <a class="btn btn-danger" href="/Inventario/Create">CONSOLIDAR</a>
+                            <a class="btn btn-danger" href="/Inventario/Create"">CONSOLIDAR</a>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                             <input hidden="hidden" id="input_inventario_id" />
                             <p>Atenção! Este é um caminho sem volta. Os dados excluídos <b>NÃO</b> poderão ser recuperados</p>
                             <p>Tem certeza que deseja excluir?</p>
-                            <a class="btn btn-warning" href="#" onclick="excluirInventario();">Tenho certeza</a>
+                            <a class="btn btn-warning" href="#" onclick="disableMe(this); excluirInventario();">Tenho certeza</a>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
             </button>
         }
 
-        <table class="table">
+        <table class="table">   
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Semestre)
@@ -112,7 +112,7 @@
                         @Html.DisplayFor(modelItem => item.Consolidado)
                     </td>
                     <td>
-                        @Html.ActionLink("Detalhar", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Baixar PDF", "Details", new { id = item.Id }, new { @class = "btn btn-primary", @onClick = "disableMe(this);" }) |
                         <button data-toggle="modal"
                                 data-target="#modalConfirmaExclusao"
                                 class="btn btn-danger"

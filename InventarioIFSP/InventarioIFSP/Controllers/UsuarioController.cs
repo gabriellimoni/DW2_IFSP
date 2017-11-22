@@ -97,7 +97,51 @@ namespace InventarioIFSP.Controllers
             TempData["msg_type"] = "warning";
             return RedirectToAction("Index", "Home");
         }
-    
+
+        [HttpGet]
+        public ActionResult MyData()
+        {
+            if (Session["usuario_nivel"] != null) // Proteção de rota
+            {
+                Usuario user = UsuarioDAO.GetByID(Convert.ToInt32(Session["usuario_id"]));
+                return View(user);
+            }
+            TempData["msg"] = "Necessário estar logado!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult MyData(Usuario user)
+        {
+            user.Nivel = Convert.ToInt32(Session["usuario_nivel"]);
+            try
+            {
+                if (UsuarioDAO.Update(user)) {
+                    string username = user.Email;
+                    string senha = user.Senha;
+                    Usuario u = UsuarioDAO.Login(username, senha);
+                    if (u != null)
+                    {
+                        Session["usuario_id"] = u.ID;
+                        Session["usuario_nome"] = u.Nome;
+                        Session["usuario_email"] = u.Email;
+                        Session["usuario_nivel"] = u.Nivel;
+                    }
+
+                    TempData["msg"] = "Alterado com sucesso!";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("MyData","Usuario");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            TempData["msg"] = "Houve um erro!";
+            TempData["msg_type"] = "warning";
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         public ActionResult Create(Usuario user)
